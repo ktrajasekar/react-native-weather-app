@@ -53,17 +53,17 @@ Join our community of developers creating universal apps.
 ## Flatlist
 
 ```
-<FlatList data={[{
-        key: "hello"
+   <FlatList data={[{
+   key: "hello"
 
-      }, {
-        key: "hello"
+   }, {
+   key: "hello"
 
-      }, {
-        key: "hello"
+   }, {
+   key: "hello"
 
-      }, {
-        key: "hello"
+   }, {
+   key: "hello"
 
-      }]} renderItem={({ item }) => <Text>{item.key}</Text>} />
+   }]} renderItem={({ item }) => <Text>{item.key}</Text>} />
 ```
