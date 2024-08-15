@@ -66,4 +66,18 @@ Join our community of developers creating universal apps.
    key: "hello"
 
    }]} renderItem={({ item }) => <Text>{item.key}</Text>} />
+   
+```
+
+## tomorrow.io Weather API
+
+Weather API consumed from tomorrow.io free version, 
+Register an api and key can be used in 
+
+config.json in app root directory
+
+```
+{
+    "API_KEY":""
+}
 ```
