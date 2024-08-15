@@ -48,3 +48,46 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+## Flatlist
+
+```
+   <FlatList data={[{
+   key: "hello"
+
+   }, {
+   key: "hello"
+
+   }, {
+   key: "hello"
+
+   }, {
+   key: "hello"
+
+   }]} renderItem={({ item }) => <Text>{item.key}</Text>} />
+   
+```
+
+## tomorrow.io Weather API
+
+Weather API consumed from tomorrow.io free version, 
+Register an api and key can be used in 
+
+config.json in app root directory
+
+```
+{
+    "API_KEY":""
+}
+```
+
+### Node link for Android Studio
+
+sudo ln -s "$(which node)" /usr/local/bin/node
+
+
+### Permission Request
+https://reactnative.dev/docs/permissionsandroid.html#request
+https://github.com/zoontek/react-native-permissions
+https://blog.logrocket.com/react-native-geolocation-complete-tutorial/
