@@ -1,5 +1,6 @@
+
 import { useEffect, useState } from "react";
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, PermissionsAndroid, Platform } from 'react-native';
 import CONFIG from "../config.json";
 import reponse from "../app/response.json"
 
@@ -8,35 +9,62 @@ interface LocationProps {
     longitude: number
 }
 
-export default function Page() {
+export default function Index() {
     console.log(reponse)
     const [location, setLocation] = useState<LocationProps>({
         latitude: 0,
         longitude: 0
     })
     console.log()
+    //reponse.timelines.daily
     const [weatherData, setWeatherData] = useState<any>([])
     useEffect(() => {
-        const onGeolocationSuccess = (geolocation: GeolocationPosition) => {
-            const { latitude, longitude } = geolocation.coords;
-            setLocation({ latitude, longitude });
-            fetchWeatherData();
-        };
-        const handleGeolocationError = (error: GeolocationPositionError) => {
-            console.error(`Failed to get geolocation: ${error.message}`);
-        };
-        if (navigator.geolocation) navigator.geolocation.getCurrentPosition(onGeolocationSuccess, handleGeolocationError)
-        async function fetchWeatherData() {
-            console.log(`${location.latitude},${location.longitude}`)
-            const URL = `https://api.tomorrow.io/v4/weather/forecast?location=${location.latitude},${location.longitude}&apikey=${CONFIG.API_KEY}&timesteps=1d&units=metric&language=en`
+
+        async function requestLocationPermission() {
             try {
-                const response = await fetch(URL);
-                const data = await response.json();
-                console.log(data)
-                setWeatherData(data.timelines.daily)
-            } catch (error) {
+                if (Platform.OS === 'android') {
+                    const granted = await PermissionsAndroid.request(
+                        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+                    );
+                    console.log("asdasdas", granted)
+                    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                        const onGeolocationSuccess = (geolocation: GeolocationPosition) => {
+                            const { latitude, longitude } = geolocation.coords;
+                            console.log(`You are at latitude: ${latitude} and longitude: ${longitude}`);
+                            setLocation({ latitude, longitude });
+                            fetchWeatherData();
+                        };
+                        fetchWeatherData();
+                        const handleGeolocationError = (error: GeolocationPositionError) => {
+                            console.error(`Failed to get geolocation: ${error.message}`);
+                        };
+                        if (navigator.geolocation) navigator.geolocation.getCurrentPosition(onGeolocationSuccess, handleGeolocationError)
+                        async function fetchWeatherData() {
+                            console.log(`${location.latitude},${location.longitude}`)
+                            const URL = `https://api.tomorrow.io/v4/weather/forecast?location=${location.latitude},${location.longitude}&apikey=${CONFIG.API_KEY}&timesteps=1d&units=metric&language=en`
+                            try {
+                                const response = await fetch(URL, {
+                                    method: 'GET',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                });
+                                const data = await response.json();
+                                console.log(data)
+                                setWeatherData(data.timelines.daily)
+                            } catch (error) {
+                            }
+                        }
+                    } else {
+                        console.log("Location permission denied");
+                    }
+                }
+
+            } catch (err) {
+                console.warn(err);
             }
         }
+        requestLocationPermission()
     }, [])
     const formatTime = (time: string) => {
         const date = new Date(time);
@@ -49,7 +77,6 @@ export default function Page() {
         return formattedDate;
     }
     return (<View style={styles.container}>
-
         {weatherData.length > 0 && weatherData?.map((data: any) => {
             return (
                 <View key={data.time} style={styles.card}>

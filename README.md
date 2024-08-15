@@ -81,3 +81,13 @@ config.json in app root directory
     "API_KEY":""
 }
 ```
+
+### Node link for Android Studio
+
+sudo ln -s "$(which node)" /usr/local/bin/node
+
+
+### Permission Request
+https://reactnative.dev/docs/permissionsandroid.html#request
+https://github.com/zoontek/react-native-permissions
+https://blog.logrocket.com/react-native-geolocation-complete-tutorial/
